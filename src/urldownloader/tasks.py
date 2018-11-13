@@ -11,6 +11,10 @@ from django.template.loader import get_template
 
 @task
 def email_zip(emails, errors, zipfile):
+    """
+    Accepts emails, error log dict and zipfile path and send an
+    emails to provided emails with zip as an attachment.
+    """
     recipient = []
     for email in emails.split(','):
         recipient.append(email)
@@ -24,17 +28,19 @@ def email_zip(emails, errors, zipfile):
 
 @task
 def download_url_as_html(urls, emails):
-
+    """
+    Accepts urls and emails lists and download html from provided urls
+    and create zip file of html files.
+    """
     errors = {}
     with tempfile.NamedTemporaryFile(suffix='_%s' % 'urls_html.zip', delete=False) as tmp:
         with zipfile.ZipFile(tmp.name, 'w') as htmlzip:
             for url in urls.split(','):
-                print('Downloading URL => ', url)
-                conn = urllib3.connection_from_url(url)
                 try:
+                    conn = urllib3.connection_from_url(url)
                     content = conn.request('GET', '/', assert_same_host=False)
                 except Exception as e:
-                    errors.update({url: e.reason})
+                    errors.update({url: str(e.reason)})
                     continue
                 domain = url.split('//')
                 fp = tempfile.NamedTemporaryFile(
@@ -43,3 +49,4 @@ def download_url_as_html(urls, emails):
                 htmlzip.write(fp.name)
                 fp.close()
         email_zip.delay(emails, errors, tmp.name)
+    return {}

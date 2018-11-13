@@ -11,12 +11,11 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-import djcelery
 
 try:
     from .local import *
 except ImportError as e:
-    from .production import *
+    from .prod import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,7 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 
-ALLOWED_HOSTS = []
+# It's not good practice to put * in ALLOWED_HOSTS for security reasons
+# You can add specific hosts which you want to allow access to your app
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -102,9 +103,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-# Celery Setup
-djcelery.setup_loader()
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/

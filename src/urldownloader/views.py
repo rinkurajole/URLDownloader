@@ -7,7 +7,7 @@ from .tasks import download_url_as_html
 
 class URLDownloader(viewsets.ViewSet):
     """
-    To create router for accepting post parameters.
+    To create router for accepting post requests.
     """
 
     @list_route(url_path="download_urls", methods=['post', ])
