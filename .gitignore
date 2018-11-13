@@ -1,0 +1,16 @@
+# Virtual ENV Dirs
+
+lib/
+bin/
+include/
+share/
+
+# Log Files
+src/db.sqlite3
+src/core/settings/local.py
+src/core/__pycache__/
+src/core/settings/__pycache__/
+src/urldownloader/__pycache__/
+src/urldownloader/migrations/__pycache__/
+celerybeat-schedule
+pip-selfcheck.json
